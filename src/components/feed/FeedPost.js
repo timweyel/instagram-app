@@ -11,12 +11,14 @@ function FeedPost({ post }) {
   const [showCaption, setCaption] = React.useState(false);
   const { id, media, likes, user, caption, comments } = post;
 
+  console.log(comments);
+
   return (
     <>
       <article className={classes.article}>
         {/* Feed Post Header */}
         <div className={classes.postHeader}>
-          <UserCard />
+          <UserCard user={user}/>
           <MoreIcon 
             className={classes.moreIcon}
           />
@@ -39,7 +41,7 @@ function FeedPost({ post }) {
             <span>{likes === 1 ? '1 like' : `${likes} likes`}</span>
           </Typography>
           <div className={showCaption ? classes.expanded : classes.collapsed}>
-            <Link to={`${user.username}`}>
+            <Link to={`/${user.username}`}>
               <Typography
                 variant="subtitle2"
                 component="span"
@@ -52,7 +54,7 @@ function FeedPost({ post }) {
               <Typography
                 variant="body2"
                 component="span"
-                dangerouslySetInnerHTML={{ __html: caption}}
+                dangerouslySetInnerHTML={{ __html: caption }}
               />
             ) : (
               <div className={classes.captionWrapper}>
@@ -67,7 +69,7 @@ function FeedPost({ post }) {
                   className={classes.moreButton}
                   onClick={() => setCaption(true)}
                 >
-
+                  more
                 </Button>
               </div>
             )}
