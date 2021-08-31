@@ -2,13 +2,19 @@ import React from "react";
 import { useFeedPageStyles } from "../styles";
 import Layout from "../components/shared/Layout";
 import UserCard from "../components/shared/UserCard";
+import LoadingScreen from "../components/shared/LoadingScreen";
 import FeedPost from "../components/feed/FeedPost";
 import FeedSideSuggestions from "../components/feed/FeedSideSuggestions";
 import { getDefaultPost } from '../data';
 import { Hidden } from "@material-ui/core";
+import { LoadingLargeIcon } from "../icons";
 
 function FeedPage() {
   const classes = useFeedPageStyles();
+  const [isEndOfFeed] = React.useState(false);
+
+  let loading = false;
+  if (loading) return <LoadingScreen />
 
   return (
     <Layout>
@@ -23,12 +29,13 @@ function FeedPage() {
         <Hidden smDown>
             <div className={classes.sidebarContainer}>
               <div className={classes.sidebarWrapper}>
-                <UserCard />
+                <UserCard avatarSize={50} />
                 <FeedSideSuggestions />
               </div>
             </div>
 
         </Hidden>
+        {!isEndOfFeed && <LoadingLargeIcon />}
       </div>
     </Layout>
   )
