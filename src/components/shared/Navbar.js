@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavbarStyles } from "../../styles";
-import { AppBar, InputBase, Hidden } from "@material-ui/core";
+import { AppBar, InputBase, Hidden, Avatar } from "@material-ui/core";
 import { Link, useHistory } from "react-router-dom";
 import logo from '../../images/logo.png';
 import { LoadingIcon, AddIcon, LikeIcon, LikeActiveIcon, ExploreIcon, ExploreActiveIcon, HomeIcon, HomeActiveIcon } from '../../icons';
@@ -93,6 +93,10 @@ function Links({ path }) {
           <div className={path === `/${defaultCurrentUser.username}` ?
           classes.profileActive : ""}>
           </div>
+          <Avatar 
+            src={defaultCurrentUser.profile_image}
+            className={classes.profileImage}
+          />
           {path === `/${defaultCurrentUser.username}` ? <ExploreActiveIcon /> : <ExploreIcon />}
         </Link>
       </div>
