@@ -1,11 +1,12 @@
 import React from "react";
-import { useNavbarStyles, WhiteTooltip } from "../../styles";
-import { AppBar, InputBase, Hidden, Avatar, Grid, Fade, Typography } from "@material-ui/core";
+import { useNavbarStyles, WhiteTooltip, RedTooltip } from "../../styles";
+import { AppBar, InputBase, Hidden, Avatar, Grid, Fade, Typography, Zoom } from "@material-ui/core";
 import { Link, useHistory } from "react-router-dom";
 import logo from '../../images/logo.png';
 import { LoadingIcon, AddIcon, LikeIcon, LikeActiveIcon, ExploreIcon, ExploreActiveIcon, HomeIcon, HomeActiveIcon } from '../../icons';
+import NotificationTooltip from '../notification/NotificationTooltip';
+import NotificationList from '../notification/NotificationList';
 import { defaultCurrentUser, getDefaultPost, getDefaultUser } from '../../data';
-import { isTemplateElement } from "@babel/types";
 
 function Navbar({ minimalNavbar }) {
   const classes = useNavbarStyles();
@@ -18,7 +19,7 @@ function Navbar({ minimalNavbar }) {
         <Logo />
         {!minimalNavbar && (
           <>
-            <Search />
+            <Search history={history}/>
             <Links path={path} />
           </>
         )}
@@ -41,7 +42,7 @@ function Logo() {
   )
 }
 
-function Search() {
+function Search({ history }) {
   const classes = useNavbarStyles();
   const [loading, setLoading] = React.useState(false);
   const [results, setResults] = React.useState([]);
@@ -73,6 +74,10 @@ function Search() {
                   key={result.id}
                   item
                   className={classes.resultLink}
+                  onClick={() => {
+                    history.push(`/${result.username}`);
+                    handleClearInput()
+                  }}
                 >
                   <div className={classes.resultWrapper}>
                     <div className={classes.avatarWrapper}>
@@ -114,14 +119,27 @@ function Search() {
 
 function Links({ path }) {
   const classes = useNavbarStyles();
-  const [showList, setList] = React.useState();
+  const [showList, setList] = React.useState(true);
+  const [showTooltip, setShowTooltip] = React.useState(false);
+
+  React.useEffect(() => {
+    const timeout = setTimeout(handleHideTooltip, 5000);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
 
   function handleToggleList() {
     setList(prev => !prev);
   }
 
+  function handleHideTooltip() {
+    setShowTooltip(false);
+  }
+
   return (
     <div className={classes.linksContainer}>
+      {showList && <NotificationList />}
       <div className={classes.linksWrapper}>
         <Hidden xsDown>
           <AddIcon />
@@ -132,9 +150,17 @@ function Links({ path }) {
         <Link to="/explore">
           {path === "/explore" ? <ExploreActiveIcon /> : <ExploreIcon />}
         </Link>
+        <RedTooltip
+          arrow
+          open={showTooltip}
+          onOpen={handleHideTooltip}
+          TransitionComponent={Zoom}
+          title={<NotificationTooltip />}
+        >
         <div className={classes.notifications} onClick={handleToggleList}>
           {showList ? <LikeActiveIcon /> : <LikeIcon />}
         </div>
+        </RedTooltip>
         <Link to={`/${defaultCurrentUser.username}`}>
           <div className={path === `/${defaultCurrentUser.username}` ?
           classes.profileActive : ""}>
@@ -143,7 +169,6 @@ function Links({ path }) {
             src={defaultCurrentUser.profile_image}
             className={classes.profileImage}
           />
-          {path === `/${defaultCurrentUser.username}` ? <ExploreActiveIcon /> : <ExploreIcon />}
         </Link>
       </div>
     </div>
