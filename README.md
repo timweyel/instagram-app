@@ -1,37 +1,43 @@
 # instagram-react12
 
-## Routes
+## Routes (Pages)
 
 - / (feed page)
-  Components:
-  - FeedPost
-  - FeedPostSkeleton
-  - FeedSideSuggestions
+
+Components:
+
+- FeedPost
+- FeedPostSkeleton
+- FeedSideSuggestions
 
 - /explore (explore page)
 
-Components: 
-  - ExploreSuggestions
-  - ExploreGrid
+Components:
+
+- ExploreSuggestions
+- ExploreGrid
 
 - /p/:postId (post page)
 
-  Components:
-  - Post
-  - PostSkeleton
-  - PostModal
-  - MorePostsFromUser
+Components:
 
-- notifications
+- Post
+- PostSkeleton
+- PostModal
+- MorePostsFromUser
 
-  Components:
-  - Notificationlist
-  - NotificationToolTip
+- notification
+
+Components:
+
+- NotificationList
+- NotificationTooltip
 
 - /:username (profile page)
 
-  Components:
-  - ProfileTabs
+Components:
+
+- ProfileTabs
 
 - /accounts/edit/ (edit profile page)
 
@@ -39,7 +45,7 @@ Components:
 
 - /accounts/emailsignup/ (signup page)
 
-- * (not found page)
+- - (not found page)
 
 ## Shared Components
 

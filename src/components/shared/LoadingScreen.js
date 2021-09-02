@@ -11,7 +11,7 @@ function LoadingScreen() {
         <LogoLoadingIcon />
       </span>
     </section>
-  )
+  );
 }
 
 export default LoadingScreen;

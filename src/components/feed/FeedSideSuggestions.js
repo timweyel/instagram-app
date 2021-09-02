@@ -1,9 +1,9 @@
-import { Typography, Paper } from "@material-ui/core";
-import FollowButton from "../shared/FollowButton";
 import React from "react";
-import { getDefaultUser } from "../../data";
 import { useFeedSideSuggestionsStyles } from "../../styles";
+import { Paper, Typography } from "@material-ui/core";
+import { getDefaultUser } from "../../data";
 import UserCard from "../shared/UserCard";
+import FollowButton from "../shared/FollowButton";
 import { LoadingIcon } from "../../icons";
 
 function FeedSideSuggestions() {
@@ -15,14 +15,14 @@ function FeedSideSuggestions() {
     <article className={classes.article}>
       <Paper className={classes.paper}>
         <Typography
-          color = "textSecondary"
-          variant = "subtitle2"
+          color="textSecondary"
+          variant="subtitle2"
           component="h2"
           align="left"
           gutterBottom
           className={classes.typography}
-          >
-            Suggestions For you
+        >
+          Suggestions For You
         </Typography>
         {loading ? (
           <LoadingIcon />
@@ -36,7 +36,7 @@ function FeedSideSuggestions() {
         )}
       </Paper>
     </article>
-  )
+  );
 }
 
 export default FeedSideSuggestions;
