@@ -6,21 +6,26 @@ import { Link } from 'react-router-dom';
 import { Typography, Button, Hidden, Divider, TextField } from "@material-ui/core";
 import HTMLEllipsis from 'react-lines-ellipsis';
 import FollowSuggestions from '../shared/FollowSuggestions';
+import OptionsDialog from "../shared/OptionsDialog";
 
 function FeedPost({ post, index }) {
   const classes = useFeedPostStyles();
   const [showCaption, setCaption] = React.useState(false);
+  const [showOptionsDialog, setOptionsDialog] = React.useState(false);
   const { id, media, likes, user, caption, comments } = post;
-  const showFollowSuggestions = index === 1
+  const showFollowSuggestions = index === 1;
 
   return (
     <>
-      <article className={classes.article}>
+      <article className={classes.article}
+        style={{marginBottom: showFollowSuggestions && 30}}
+      >
         {/* Feed Post Header */}
         <div className={classes.postHeader}>
           <UserCard user={user}/>
           <MoreIcon 
             className={classes.moreIcon}
+            onClick={() => setOptionsDialog(true)}
           />
         </div>
         {/* Feed Post Image */}
@@ -109,6 +114,7 @@ function FeedPost({ post, index }) {
         </Hidden>
       </article>
       {showFollowSuggestions && <FollowSuggestions />}
+      {showOptionsDialog && <OptionsDialog onClose={() => setOptionsDialog(false)}/>}
     </>
   )
 }
