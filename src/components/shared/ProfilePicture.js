@@ -7,7 +7,7 @@ function ProfilePicture({
   image = 'https://www.vhv.rs/dpng/d/82-825693_avatar-maker-create-your-own-avatar-online-hd.png',
   isOwner
 }) {
-  const classes = useProfilePictureStyles();
+  const classes = useProfilePictureStyles({ size, isOwner });
 
   return (
     <section className={classes.section}>
