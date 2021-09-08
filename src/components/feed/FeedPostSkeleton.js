@@ -15,7 +15,7 @@ function FeedPostSkeleton() {
       </div>
       <div className={classes.mediaSkeleton} />
     </div>
-  )
+  );
 }
 
 export default FeedPostSkeleton;

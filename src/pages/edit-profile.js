@@ -1,15 +1,25 @@
-import { Button, Drawer, Hidden, IconButton, List, ListItem, ListItemText, TextField, Typography } from "@material-ui/core";
-import { Menu } from '@material-ui/icons'
 import React from "react";
-import Layout from "../components/shared/Layout";
-import ProfilePicture from "../components/shared/ProfilePicture";
-import { defaultCurrentUser } from "../data";
 import { useEditProfilePageStyles } from "../styles";
+import Layout from "../components/shared/Layout";
+import {
+  IconButton,
+  Button,
+  Hidden,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+  TextField
+} from "@material-ui/core";
+import { Menu } from "@material-ui/icons";
+import { defaultCurrentUser } from "../data";
+import ProfilePicture from "../components/shared/ProfilePicture";
 
 function EditProfilePage({ history }) {
   const classes = useEditProfilePageStyles();
-  const [showDrawer, setDrawer] = React.useState(false);
   const path = history.location.pathname;
+  const [showDrawer, setDrawer] = React.useState(false);
 
   function handleToggleDrawer() {
     setDrawer(prev => !prev);
@@ -17,8 +27,8 @@ function EditProfilePage({ history }) {
 
   function handleSelected(index) {
     switch (index) {
-      case 0: 
-        return path.includes('edit')
+      case 0:
+        return path.includes("edit");
       default:
         break;
     }
@@ -27,7 +37,7 @@ function EditProfilePage({ history }) {
   function handleListClick(index) {
     switch (index) {
       case 0:
-        history.push('/accounts/edit');
+        history.push("/accounts/edit");
         break;
       default:
         break;
@@ -53,7 +63,7 @@ function EditProfilePage({ history }) {
           key={option}
           button
           selected={handleSelected(index)}
-          onClick = {() => handleListClick(index)}
+          onClick={() => handleListClick(index)}
           classes={{
             selected: classes.listItemSelected,
             button: classes.listItemButton
@@ -68,7 +78,7 @@ function EditProfilePage({ history }) {
   return (
     <Layout title="Edit Profile">
       <section className={classes.section}>
-        <IconButton 
+        <IconButton
           edge="start"
           onClick={handleToggleDrawer}
           className={classes.menuButton}
@@ -87,25 +97,25 @@ function EditProfilePage({ history }) {
               {drawer}
             </Drawer>
           </Hidden>
-          <Hidden 
-            xsDown 
+          <Hidden
+            xsDown
             implementation="css"
             className={classes.permanentDrawerRoot}
           >
             <Drawer
               variant="permanent"
               open
-              classes={{ 
+              classes={{
                 paper: classes.permanentDrawerPaper,
                 root: classes.permanentDrawerRoot
-               }}
+              }}
             >
               {drawer}
             </Drawer>
           </Hidden>
         </nav>
         <main>
-          {path.includes('edit') && <EditUserInfo user={defaultCurrentUser} />}
+          {path.includes("edit") && <EditUserInfo user={defaultCurrentUser} />}
         </main>
       </section>
     </Layout>
@@ -116,7 +126,7 @@ function EditUserInfo({ user }) {
   const classes = useEditProfilePageStyles();
 
   return (
-    <section className = {classes.container}>
+    <section className={classes.container}>
       <div className={classes.pictureSectionItem}>
         <ProfilePicture size={38} user={user} />
         <div className={classes.justifySelfStart}>
@@ -126,9 +136,10 @@ function EditUserInfo({ user }) {
           <Typography
             color="primary"
             variant="body2"
-            className={classes.typographyChangePic}>
-              Change Profile Photo
-            </Typography>
+            className={classes.typographyChangePic}
+          >
+            Change Profile Photo
+          </Typography>
         </div>
       </div>
       <form className={classes.form}>
@@ -150,22 +161,25 @@ function EditUserInfo({ user }) {
         </div>
         <div className={classes.sectionItem}>
           <div />
-            <Typography color="textSecondary" className={classes.justifySelfStart}>
-              Personal Information
-            </Typography>
-          </div>
-          <SectionItem text="Email" formItem={user.email} type="email" />
-          <SectionItem text="Phone Number" formItem={user.phone_number} />
-          <div className={classes.sectionItem}>
-            <div />
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              className={classes.justifySelfStart}
-            >
-              Submit
-            </Button>
+          <Typography
+            color="textSecondary"
+            className={classes.justifySelfStart}
+          >
+            Personal information
+          </Typography>
+        </div>
+        <SectionItem text="Email" formItem={user.email} type="email" />
+        <SectionItem text="Phone Number" formItem={user.phone_number} />
+        <div className={classes.sectionItem}>
+          <div />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className={classes.justifySelfStart}
+          >
+            Submit
+          </Button>
         </div>
       </form>
     </section>
@@ -184,9 +198,7 @@ function SectionItem({ type = "text", text, formItem }) {
           </Typography>
         </Hidden>
         <Hidden smUp>
-          <Typography className={classes.typography}>
-            {text}
-          </Typography>
+          <Typography className={classes.typography}>{text}</Typography>
         </Hidden>
       </aside>
       <TextField
@@ -200,7 +212,7 @@ function SectionItem({ type = "text", text, formItem }) {
         }}
       />
     </div>
-  )
+  );
 }
 
 export default EditProfilePage;

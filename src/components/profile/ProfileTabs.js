@@ -1,7 +1,7 @@
-import { Divider, Hidden, Tab, Tabs, Typography } from "@material-ui/core";
 import React from "react";
-import { GridIcon, SaveIcon } from "../../icons";
 import { useProfileTabsStyles } from "../../styles";
+import { Divider, Tabs, Tab, Hidden, Typography } from "@material-ui/core";
+import { GridIcon, SaveIcon } from "../../icons";
 import GridPost from "../shared/GridPost";
 
 function ProfileTabs({ user, isOwner }) {
@@ -21,7 +21,7 @@ function ProfileTabs({ user, isOwner }) {
             centered
             classes={{ indicator: classes.tabsIndicator }}
           >
-            <Tab 
+            <Tab
               icon={<span className={classes.postsIconLarge} />}
               label="POSTS"
               classes={{
@@ -31,15 +31,15 @@ function ProfileTabs({ user, isOwner }) {
               }}
             />
             {isOwner && (
-              <Tab 
-              icon={<span className={classes.savedIconLarge} />}
-              label="SAVED"
-              classes={{
-                root: classes.tabRoot,
-                labelIcon: classes.tabLabelIcon,
-                wrapper: classes.tabWrapper
-              }}
-            />
+              <Tab
+                icon={<span className={classes.savedIconLarge} />}
+                label="SAVED"
+                classes={{
+                  root: classes.tabRoot,
+                  labelIcon: classes.tabLabelIcon,
+                  wrapper: classes.tabWrapper
+                }}
+              />
             )}
           </Tabs>
         </Hidden>
@@ -64,8 +64,8 @@ function ProfileTabs({ user, isOwner }) {
           </Tabs>
         </Hidden>
         <Hidden smUp>{user.posts.length === 0 && <Divider />}</Hidden>
-        {value ===0 && <ProfilePosts user={user} isOwner={isOwner} />}
-        {value === 1 && <SavedPosts user={user} />}
+        {value === 0 && <ProfilePosts user={user} isOwner={isOwner} />}
+        {value === 1 && <SavedPosts />}
       </section>
     </>
   );
@@ -76,16 +76,16 @@ function ProfilePosts({ user, isOwner }) {
 
   if (user.posts.length === 0) {
     return (
-      <section className={classes.profilePostSection}>
+      <section className={classes.profilePostsSection}>
         <div className={classes.noContent}>
           <div className={classes.uploadPhotoIcon} />
-          <Typography variant = "h4">
+          <Typography variant="h4">
             {isOwner ? "Upload a Photo" : "No Photos"}
           </Typography>
         </div>
       </section>
-    );  
-  } 
+    );
+  }
 
   return (
     <article className={classes.article}>
@@ -95,25 +95,24 @@ function ProfilePosts({ user, isOwner }) {
         ))}
       </div>
     </article>
-  )
+  );
 }
 
-function SavedPosts({ user, isOwner }) {
+function SavedPosts() {
   const classes = useProfileTabsStyles();
 
   return (
     <section className={classes.savedPostsSection}>
-    <div className={classes.noContent}>
-      <div className={classes.savePhotoIcon} />
-      <Typography variant = "h4">
-        Save
-      </Typography>
-      <Typography align="center">
-        Save photos and videos that you want to see again. No one is notified, and only you can see what you've saved.
-      </Typography>
-    </div>
-  </section>
-  )
+      <div className={classes.noContent}>
+        <div className={classes.savePhotoIcon} />
+        <Typography variant="h4">Save</Typography>
+        <Typography align="center">
+          Save photos and videos that you want to see again. No one is notified,
+          and only you can see what you've saved.
+        </Typography>
+      </div>
+    </section>
+  );
 }
 
 export default ProfileTabs;

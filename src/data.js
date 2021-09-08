@@ -26,7 +26,7 @@ export const defaultPost = {
   caption: `<span class="">Do you know the 10 JavaScript concepts you need to learn React? 🤔⚛️👇<br>•<br>•<br>👉 Get the FREE cheatsheet to learn them now: bit.ly/10-js-tips 🔥</span>`,
   user: defaultUser,
   media:
-    "https://blog.logrocket.com/wp-content/uploads/2019/09/10-common-react-mistakes-nocdn.png",
+    "https://uploads.sitepoint.com/wp-content/uploads/2017/04/1493235373large_react_apps_A-01.png",
   comments: [],
   created_at: "2020-02-28T03:08:14.522421+00:00"
 };
@@ -38,7 +38,7 @@ export function getDefaultPost() {
     caption: `<span class="">Do you know the 10 JavaScript concepts you need to learn React? 🤔⚛️👇<br>•<br>•<br>👉 Get the FREE cheatsheet to learn them now: bit.ly/10-js-tips 🔥</span>`,
     user: defaultUser,
     media:
-      "https://blog.logrocket.com/wp-content/uploads/2019/09/10-common-react-mistakes-nocdn.png",
+      "https://uploads.sitepoint.com/wp-content/uploads/2017/04/1493235373large_react_apps_A-01.png",
     comments: [],
     created_at: "2020-02-28T03:08:14.522421+00:00"
   };

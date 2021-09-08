@@ -9,7 +9,7 @@ import { Hidden } from "@material-ui/core";
 import LoadingScreen from "../components/shared/LoadingScreen";
 import { LoadingLargeIcon } from "../icons";
 import FeedPostSkeleton from "../components/feed/FeedPostSkeleton";
-const FeedPost = React.lazy(() => import('../components/feed/FeedPost'))
+const FeedPost = React.lazy(() => import("../components/feed/FeedPost"));
 
 function FeedPage() {
   const classes = useFeedPageStyles();
@@ -26,7 +26,7 @@ function FeedPage() {
           {Array.from({ length: 5 }, () => getDefaultPost()).map(
             (post, index) => (
               <React.Suspense key={post.id} fallback={<FeedPostSkeleton />}>
-                <FeedPost key={post.id} index={index} post={post} />
+                <FeedPost index={index} post={post} />
               </React.Suspense>
             )
           )}

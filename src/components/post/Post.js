@@ -28,8 +28,8 @@ function Post() {
   const [showOptionsDialog, setOptionsDialog] = React.useState(false);
   const { id, media, likes, user, caption, comments } = defaultPost;
 
-  setTimeout(() => setLoading(false), 2000)
-  if (loading) return <PostSkeleton />
+  setTimeout(() => setLoading(false), 2000);
+  if (loading) return <PostSkeleton />;
 
   return (
     <div className={classes.postContainer}>
