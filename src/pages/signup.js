@@ -7,6 +7,9 @@ import { Link } from "react-router-dom";
 
 function SignUpPage() {
   const classes = useSignUpPageStyles();
+
+
+  
   return (
     <>
       <SEO title="Sign up" />
