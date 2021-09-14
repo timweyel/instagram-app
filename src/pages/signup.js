@@ -1,34 +1,39 @@
 import React from "react";
 import { useSignUpPageStyles } from "../styles";
 import SEO from "../components/shared/Seo";
-import { Card, Typography, TextField, Button } from "@material-ui/core";
+import { Card, Typography, TextField, Button, InputAdornment } from "@material-ui/core";
 import { LoginWithFacebook } from "./login";
 import { Link, useHistory } from "react-router-dom";
 import { AuthContext } from "../auth";
+import { useForm } from 'react-hook-form';
+import isEmail from 'validator/lib/isEmail';
+import { HighlightOff, CheckCircleOutline } from "@material-ui/icons";
 
 function SignUpPage() {
   const classes = useSignUpPageStyles();
-  const { signUpWithEmailAndPassword } = React.useContext(AuthContext)
-  const [values, setValues]  = React.useState({
-    email: '',
-    name: '',
-    username: '',
-    password: ''
-  })
+  const { register, handleSubmit, formState: { errors, touchedFields, isValid, isSubmitting }, } = useForm({ mode: 'onBlur' });
+  const { signUpWithEmailAndPassword } = React.useContext(AuthContext);
 
-  const history = useHistory()
+  const history = useHistory();
 
-  function handleChange(event) {
-    const { name, value } = event.target;
-    setValues(prev => ({ ...prev, [name]: value }));
-  }
-
-  async function handleSubmit(event){
-    event.preventDefault();
-    await signUpWithEmailAndPassword(values)
+  async function onSubmit(data) {
+    // console.log('data',data)
+    await signUpWithEmailAndPassword(data)
     history.push('/');
   }
   
+  const errorIcon = (
+    <InputAdornment>
+      <HighlightOff style={{ color: 'red', height: 30, width: 30 }} />
+    </InputAdornment>
+  )
+
+  const validIcon = (
+    <InputAdornment>
+      <CheckCircleOutline style={{ color: '#ccc', height: 30, width: 30 }} />
+    </InputAdornment>
+  )
+
   return (
     <>
       <SEO title="Sign up" />
@@ -53,10 +58,18 @@ function SignUpPage() {
               </div>
               <div className={classes.orLine} />
             </div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <TextField
                 name="email"
-                onChange={handleChange}
+                {...register('email', { 
+                  required: true, 
+                  validate: input => isEmail(input) 
+                })}
+                InputProps={{
+                  endAdornment: errors.email
+                    ? errorIcon
+                    : touchedFields.email && validIcon,
+                }}
                 fullWidth
                 variant="filled"
                 label="Email"
@@ -67,7 +80,16 @@ function SignUpPage() {
               <TextField
                 fullWidth
                 name="name"
-                onChange={handleChange}
+                {...register('name', {
+                  required: true,
+                  minLength: 5,
+                  maxLength: 20
+                })}
+                InputProps={{
+                  endAdornment: errors.name
+                    ? errorIcon
+                    : touchedFields.name && validIcon,
+                }}
                 variant="filled"
                 label="Full Name"
                 margin="dense"
@@ -75,7 +97,17 @@ function SignUpPage() {
               />
               <TextField
                 name="username"
-                onChange={handleChange}
+                {...register('username', {
+                  required: true,
+                  minLength: 5,
+                  maxLength: 20,
+                  pattern: /^[a-zA-Z0-9_.]*$/
+                })}
+                InputProps={{
+                  endAdornment: errors.username
+                    ? errorIcon
+                    : touchedFields.username && validIcon,
+                }}
                 fullWidth
                 variant="filled"
                 label="Username"
@@ -85,7 +117,15 @@ function SignUpPage() {
               />
               <TextField
                 name="password"
-                onChange={handleChange}
+                {...register('password', {
+                  required: true,
+                  minLength: 5
+                })}
+                InputProps={{
+                  endAdornment: errors.password
+                    ? errorIcon
+                    : touchedFields.password && validIcon,
+                }}
                 fullWidth
                 variant="filled"
                 label="Password"
@@ -95,6 +135,7 @@ function SignUpPage() {
                 autoComplete="new-password"
               />
               <Button
+                disabled={!isValid || isSubmitting }
                 variant="contained"
                 fullWidth
                 color="primary"
