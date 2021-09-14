@@ -13,13 +13,18 @@ function SignUpPage() {
   const classes = useSignUpPageStyles();
   const { register, handleSubmit, formState: { errors, touchedFields, isValid, isSubmitting }, } = useForm({ mode: 'onBlur' });
   const { signUpWithEmailAndPassword } = React.useContext(AuthContext);
-
   const history = useHistory();
+  const [error, setError] = React.useState('');
 
   async function onSubmit(data) {
     // console.log('data',data)
-    await signUpWithEmailAndPassword(data)
-    history.push('/');
+    try {
+      await signUpWithEmailAndPassword(data)
+      history.push('/');
+    } catch (error) {
+      console.log('Error signing up');
+      setError(error.message);
+    }
   }
   
   const errorIcon = (
@@ -145,6 +150,7 @@ function SignUpPage() {
                 Sign Up
               </Button>
             </form>
+            <AuthError error={error} />
           </Card>
           <Card className={classes.loginCard}>
             <Typography align="right" variant="body2">
@@ -160,6 +166,19 @@ function SignUpPage() {
       </section>
     </>
   );
+}
+
+export function AuthError({ error }) {
+  return Boolean(error) && (
+    <Typography
+      align="center"
+      gutterBottom
+      variant="body2"
+      style={{ color: 'red'}}
+    >
+
+    </Typography>
+  )
 }
 
 export default SignUpPage;
