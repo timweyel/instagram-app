@@ -1,43 +1,73 @@
 import React from "react";
 import { useSignUpPageStyles } from "../styles";
 import SEO from "../components/shared/Seo";
-import { Card, Typography, TextField, Button, InputAdornment } from "@material-ui/core";
+import {
+  Card,
+  Typography,
+  TextField,
+  Button,
+  InputAdornment,
+} from "@material-ui/core";
 import { LoginWithFacebook } from "./login";
 import { Link, useHistory } from "react-router-dom";
 import { AuthContext } from "../auth";
-import { useForm } from 'react-hook-form';
-import isEmail from 'validator/lib/isEmail';
+import { useForm } from "react-hook-form";
 import { HighlightOff, CheckCircleOutline } from "@material-ui/icons";
+import isEmail from "validator/lib/isEmail";
+import { useApolloClient } from "@apollo/react-hooks";
+import { CHECK_IF_USERNAME_TAKEN } from "../graphql/queries";
 
 function SignUpPage() {
   const classes = useSignUpPageStyles();
   const { register, handleSubmit, formState: { errors, touchedFields, isValid, isSubmitting }, } = useForm({ mode: 'onBlur' });
   const { signUpWithEmailAndPassword } = React.useContext(AuthContext);
   const history = useHistory();
-  const [error, setError] = React.useState('');
+  const [error, setError] = React.useState("Sign up temporarily disabled");
+  console.log('error',error);
+  const client = useApolloClient();
 
   async function onSubmit(data) {
-    // console.log('data',data)
+    // console.log({ data });
     try {
-      await signUpWithEmailAndPassword(data)
-      history.push('/');
+      setError("");
+      await signUpWithEmailAndPassword(data);
+      setTimeout(() => history.push("/"), 0);
     } catch (error) {
-      console.log('Error signing up');
+      console.error("Error signing up", error);
+      // setError(error.message);
+      handleError(error);
+    }
+  }
+
+  function handleError(error) {
+    if (error.message.includes("users_username_key")) {
+      setError("Username already taken");
+    } else if (error.code.includes("auth")) {
       setError(error.message);
     }
   }
-  
+
+  async function validateUsername(username) {
+    const variables = { username };
+    const response = await client.query({
+      query: CHECK_IF_USERNAME_TAKEN,
+      variables,
+    });
+    const isUsernameValid = response.data.users.length === 0;
+    return isUsernameValid;
+  }
+
   const errorIcon = (
     <InputAdornment>
-      <HighlightOff style={{ color: 'red', height: 30, width: 30 }} />
+      <HighlightOff style={{ color: "red", height: 30, width: 30 }} />
     </InputAdornment>
-  )
+  );
 
   const validIcon = (
     <InputAdornment>
-      <CheckCircleOutline style={{ color: '#ccc', height: 30, width: 30 }} />
+      <CheckCircleOutline style={{ color: "#ccc", height: 30, width: 30 }} />
     </InputAdornment>
-  )
+  );
 
   return (
     <>
@@ -83,7 +113,6 @@ function SignUpPage() {
                 className={classes.textField}
               />
               <TextField
-                fullWidth
                 name="name"
                 {...register('name', {
                   required: true,
@@ -95,6 +124,7 @@ function SignUpPage() {
                     ? errorIcon
                     : touchedFields.name && validIcon,
                 }}
+                fullWidth
                 variant="filled"
                 label="Full Name"
                 margin="dense"
@@ -102,17 +132,17 @@ function SignUpPage() {
               />
               <TextField
                 name="username"
+                InputProps={{
+                  endAdornment: errors.username
+                    ? errorIcon
+                    : touchedFields.username && validIcon,
+                }}
                 {...register('username', {
                   required: true,
                   minLength: 5,
                   maxLength: 20,
                   pattern: /^[a-zA-Z0-9_.]*$/
                 })}
-                InputProps={{
-                  endAdornment: errors.username
-                    ? errorIcon
-                    : touchedFields.username && validIcon,
-                }}
                 fullWidth
                 variant="filled"
                 label="Username"
@@ -124,7 +154,8 @@ function SignUpPage() {
                 name="password"
                 {...register('password', {
                   required: true,
-                  minLength: 5
+                  minLength: 5,
+                  validate: async (input) => await validateUsername(input),
                 })}
                 InputProps={{
                   endAdornment: errors.password
@@ -140,16 +171,19 @@ function SignUpPage() {
                 autoComplete="new-password"
               />
               <Button
-                disabled={!isValid || isSubmitting }
+                disabled={error || !isValid || isSubmitting}
                 variant="contained"
                 fullWidth
                 color="primary"
                 className={classes.button}
                 type="submit"
               >
-                Sign Up
+                Sign Up 
               </Button>
             </form>
+            {error}
+            {!isValid}
+            {isSubmitting}
             <AuthError error={error} />
           </Card>
           <Card className={classes.loginCard}>
@@ -169,16 +203,18 @@ function SignUpPage() {
 }
 
 export function AuthError({ error }) {
-  return Boolean(error) && (
-    <Typography
-      align="center"
-      gutterBottom
-      variant="body2"
-      style={{ color: 'red'}}
-    >
-
-    </Typography>
-  )
+  return (
+    Boolean(error) && (
+      <Typography
+        align="center"
+        gutterBottom
+        variant="body2"
+        style={{ color: "red" }}
+      >
+        {error}
+      </Typography>
+    )
+  );
 }
 
 export default SignUpPage;
