@@ -23,13 +23,15 @@ function SignUpPage() {
   const { signUpWithEmailAndPassword } = React.useContext(AuthContext);
   const history = useHistory();
   const [error, setError] = React.useState("Sign up temporarily disabled");
-  console.log('error',error);
+  // console.log('top error',error);
+  // console.log('error message', error.message);
   const client = useApolloClient();
 
   async function onSubmit(data) {
-    // console.log({ data });
+    // console.log('data',{ data });
     try {
       setError("");
+      // console.log('setError', setError)
       await signUpWithEmailAndPassword(data);
       setTimeout(() => history.push("/"), 0);
     } catch (error) {
@@ -171,7 +173,7 @@ function SignUpPage() {
                 autoComplete="new-password"
               />
               <Button
-                disabled={error || !isValid || isSubmitting}
+                // disabled={ error || !isValid || isSubmitting }
                 variant="contained"
                 fullWidth
                 color="primary"
@@ -181,9 +183,12 @@ function SignUpPage() {
                 Sign Up 
               </Button>
             </form>
-            {error}
+            {/* {error}
+            {console.log('error',{error})}
             {!isValid}
+            {console.log('isValid',{isValid})}
             {isSubmitting}
+            {console.log('isSubmitting',{isSubmitting})} */}
             <AuthError error={error} />
           </Card>
           <Card className={classes.loginCard}>
@@ -212,6 +217,7 @@ export function AuthError({ error }) {
         style={{ color: "red" }}
       >
         {error}
+        {/* {console.log('bottom error',{error})} */}
       </Typography>
     )
   );
