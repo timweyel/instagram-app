@@ -19,7 +19,7 @@ import { CHECK_IF_USERNAME_TAKEN } from "../graphql/queries";
 
 function SignUpPage() {
   const classes = useSignUpPageStyles();
-  const { register, handleSubmit, formState: { errors, touchedFields, isValid, isSubmitting }, } = useForm({ mode: 'onBlur' });
+  const { register, handleSubmit, formState: { errors, touchedFields }, } = useForm({ mode: 'onBlur' });
   const { signUpWithEmailAndPassword } = React.useContext(AuthContext);
   const history = useHistory();
   const [error, setError] = React.useState("Sign up temporarily disabled");
