@@ -40,6 +40,7 @@ function SignUpPage() {
 
   function handleError(error) {
     if (error.message.includes("users_username_key")) {
+      console.log('error', error)
       setError("Username already taken");
     } else if (error.code.includes("auth")) {
       setError(error.message);
