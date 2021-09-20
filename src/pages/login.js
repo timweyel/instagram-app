@@ -46,6 +46,7 @@ function LoginPage() {
 
   function handleError(error) {
     if (error.code.includes("auth")) {
+      console.log('error.code',error.code)
       setError(error.message);
     }
   }
@@ -74,9 +75,9 @@ function LoginPage() {
             <form onSubmit={handleSubmit(onSubmit)}>
               <TextField
                 name="input"
-                {...register('input',{
+                {...register('input', {
                   required: true,
-                  minLength: 5,
+                  minLength: 5
                 })}
                 fullWidth
                 variant="filled"
@@ -87,9 +88,9 @@ function LoginPage() {
               />
               <TextField
                 name="password"
-                {...register('password',{
+                {...register('password', {
                   required: true,
-                  minLength: 5,
+                  minLength: 5
                 })}
                 InputProps={{
                   endAdornment: hasPassword && (

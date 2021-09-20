@@ -13,7 +13,7 @@ import {
   Zoom,
   Divider,
   DialogTitle,
-  Avatar
+  Avatar,
 } from "@material-ui/core";
 import { Link, useHistory } from "react-router-dom";
 import { GearIcon } from "../icons";
@@ -168,7 +168,7 @@ function UnfollowDialog({ onClose, user }) {
     <Dialog
       open
       classes={{
-        scrollPaper: classes.unfollowDialogScrollPaper
+        scrollPaper: classes.unfollowDialogScrollPaper,
       }}
       onClose
       TransitionComponent={Zoom}
@@ -207,7 +207,7 @@ function PostCountSection({ user }) {
         <Divider />
       </Hidden>
       <section className={classes.followingSection}>
-        {options.map(option => (
+        {options.map((option) => (
           <div key={option} className={classes.followingText}>
             <Typography className={classes.followingCount}>
               {user[option].length}
@@ -249,12 +249,13 @@ function OptionsMenu({ handleCloseMenu }) {
   const { signOut } = React.useContext(AuthContext);
   const [showLogOutMessage, setLogOutMessage] = React.useState(false);
   const history = useHistory();
-  
+
   function handleLogOutClick() {
     setLogOutMessage(true);
     setTimeout(() => {
       signOut();
-    }, 2000)
+      history.push("/accounts/login");
+    }, 2000);
   }
 
   return (
@@ -262,7 +263,7 @@ function OptionsMenu({ handleCloseMenu }) {
       open
       classes={{
         scrollPaper: classes.dialogScrollPaper,
-        paper: classes.dialogPaper
+        paper: classes.dialogPaper,
       }}
       TransitionComponent={Zoom}
     >
