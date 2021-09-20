@@ -19,21 +19,18 @@ import { CHECK_IF_USERNAME_TAKEN } from "../graphql/queries";
 
 function SignUpPage() {
   const classes = useSignUpPageStyles();
-  const { register, handleSubmit, formState: { errors, touchedFields, isValid, isSubmitting }, } = useForm({ mode: 'onBlur' });
+const { register, handleSubmit, formState: { errors, touchedFields, isValid, isSubmitting }, } = useForm({ mode: 'onBlur' });
   const { signUpWithEmailAndPassword } = React.useContext(AuthContext);
   const history = useHistory();
-  const [error, setError] = React.useState("Sign up temporarily disabled");
-  // console.log('top error',error);
-  // console.log('error message', error.message);
+  const [error, setError] = React.useState("");
   const client = useApolloClient();
 
   async function onSubmit(data) {
-    // console.log('data',{ data });
+    // console.log({ data });
     try {
       setError("");
-      // console.log('setError', setError)
       await signUpWithEmailAndPassword(data);
-      setTimeout(() => history.push("/"), 0);
+      history.push("/");
     } catch (error) {
       console.error("Error signing up", error);
       // setError(error.message);
@@ -173,22 +170,16 @@ function SignUpPage() {
                 autoComplete="new-password"
               />
               <Button
-                // disabled={ error || !isValid || isSubmitting }
+                disabled={!isValid || isSubmitting}
                 variant="contained"
                 fullWidth
                 color="primary"
                 className={classes.button}
                 type="submit"
               >
-                Sign Up 
+                Sign Up
               </Button>
             </form>
-            {/* {error}
-            {console.log('error',{error})}
-            {!isValid}
-            {console.log('isValid',{isValid})}
-            {isSubmitting}
-            {console.log('isSubmitting',{isSubmitting})} */}
             <AuthError error={error} />
           </Card>
           <Card className={classes.loginCard}>
@@ -217,7 +208,6 @@ export function AuthError({ error }) {
         style={{ color: "red" }}
       >
         {error}
-        {/* {console.log('bottom error',{error})} */}
       </Typography>
     )
   );
