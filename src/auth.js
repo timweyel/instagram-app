@@ -1,23 +1,22 @@
-import { useMutation } from "@apollo/react-hooks";
+import React from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
-import React from "react";
+import defaultUserImage from "./images/default-user-image.jpg";
+import { useMutation } from "@apollo/react-hooks";
 import { CREATE_USER } from "./graphql/mutations";
-import defaultUserImage from './images/default-user-image.jpg';
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
 // Find these options in your Firebase console
 firebase.initializeApp({
-  apiKey: "AIzaSyC-6LkwMohAqXR4yT6IlKmB3DD9ynlpRd0",
-  authDomain: "instapost-f8954.firebaseapp.com",
-  databaseURL: "https://instapost-f8954-default-rtdb.firebaseio.com",
-  projectId: "instapost-f8954",
-  storageBucket: "instapost-f8954.appspot.com",
-  messagingSenderId: "98337476696",
-  appId: "1:98337476696:web:6788d39ac76c20692cba2d",
-  measurementId: "G-T35PKKSS7N"
+  apiKey: "AIzaSyC2ws_ne-3pmtR_jFdPeqZuk_XVbakDfsI",
+  authDomain: "insta-react12.firebaseapp.com",
+  databaseURL: "https://insta-react12.firebaseio.com",
+  projectId: "insta-react12",
+  storageBucket: "insta-react12.appspot.com",
+  messagingSenderId: "855447540452",
+  appId: "1:855447540452:web:1d2a10cbb3b25c215c92f1",
 });
 
 export const AuthContext = React.createContext();
@@ -43,7 +42,7 @@ function AuthProvider({ children }) {
             .ref(`metadata/${user.uid}/refreshTime`);
 
           metadataRef.on("value", async (data) => {
-            if(!data.exists) return
+            if (!data.exists) return;
             // Force refresh to pick up the latest custom claims changes.
             const token = await user.getIdToken(true);
             setAuthState({ status: "in", user, token });
@@ -55,36 +54,61 @@ function AuthProvider({ children }) {
     });
   }, []);
 
-  async function signInWithGoogle() {
-      await firebase.auth().signInWithPopup(provider);
-  };
+  async function logInWithGoogle() {
+    const data = await firebase.auth().signInWithPopup(provider);
+    if (data.additionalUserInfo.isNewUser) {
+      // console.log({ data });
+      const { uid, displayName, email, photoURL } = data.user;
+      const username = `${displayName.replace(/\s+/g, "")}${uid.slice(-5)}`;
+      const variables = {
+        userId: uid,
+        name: displayName,
+        username,
+        email,
+        bio: "",
+        website: "",
+        phoneNumber: "",
+        profileImage: photoURL,
+      };
+      await createUser({ variables });
+    }
+  }
+
+  async function logInWithEmailAndPassword(email, password) {
+    const data = await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password);
+    return data;
+  }
 
   async function signUpWithEmailAndPassword(formData) {
-  const data = await firebase.auth().createUserWithEmailAndPassword(formData.email, formData.password)
-  if (data.additionalUserInfo.isNewUser) {
-    const variables = {
-      userId: data.user.uid,
-      name: formData.name,
-      username: formData.username,
-      email: data.user.email,
-      bio: "",
-      website: "",
-      profileImage: defaultUserImage,
-      phoneNumber: ""
+    const data = await firebase
+      .auth()
+      .createUserWithEmailAndPassword(formData.email, formData.password);
+    if (data.additionalUserInfo.isNewUser) {
+      const variables = {
+        userId: data.user.uid,
+        name: formData.name,
+        username: formData.username,
+        email: data.user.email,
+        bio: "",
+        website: "",
+        phoneNumber: "",
+        profileImage: defaultUserImage,
+      };
+      await createUser({ variables });
     }
-    await createUser({ variables })
   }
-}
 
-  async function signOut(){
-    try {
-      setAuthState({ status: "loading" });
-      await firebase.auth().signOut();
-      setAuthState({ status: "out" });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  async function signOut() {
+    setAuthState({ status: "loading" });
+    await firebase.auth().signOut();
+    setAuthState({ status: "out" });
+  }
+
+  async function updateEmail(email) {
+    await authState.user.updateEmail(email);
+  }
 
   if (authState.status === "loading") {
     return null;
@@ -93,9 +117,11 @@ function AuthProvider({ children }) {
       <AuthContext.Provider
         value={{
           authState,
-          signInWithGoogle,
+          logInWithGoogle,
+          logInWithEmailAndPassword,
           signOut,
-          signUpWithEmailAndPassword
+          signUpWithEmailAndPassword,
+          updateEmail,
         }}
       >
         {children}
