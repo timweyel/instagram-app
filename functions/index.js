@@ -3,13 +3,13 @@ const admin = require("firebase-admin");
 admin.initializeApp(functions.config().firebase);
 
 // On sign up.
-exports.processSignUp = functions.auth.user().onCreate(user => {
+exports.processSignUp = functions.auth.user().onCreate((user) => {
   const customClaims = {
     "https://hasura.io/jwt/claims": {
       "x-hasura-default-role": "user",
       "x-hasura-allowed-roles": ["user"],
-      "x-hasura-user-id": user.uid
-    }
+      "x-hasura-user-id": user.uid,
+    },
   };
 
   return admin
@@ -22,7 +22,7 @@ exports.processSignUp = functions.auth.user().onCreate(user => {
       // This will be captured on the client to force a token refresh.
       return metadataRef.set({ refreshTime: new Date().getTime() });
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
     });
-}); 
+});
