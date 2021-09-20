@@ -34,3 +34,5 @@ export const GET_EDIT_USER_PROFILE = gql`
     }
   }
 `;
+
+//trigger
