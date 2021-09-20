@@ -30,26 +30,26 @@ function LoginPage() {
   const [error, setError] = React.useState("");
 
   async function onSubmit({ input, password }) {
-    // try {
-    //   setError("");
+    try {
+      setError("");
       if (!isEmail(input)) {
         input = await getUserEmail(input);
       }
       // console.log({ data });
       await logInWithEmailAndPassword(input, password);
       setTimeout(() => history.push("/"), 0);
-    // } catch (error) {
-    //   console.error("Error logging in", error);
-    //   handleError(error);
-    // }
+    } catch (error) {
+      console.error("Error logging in", error);
+      handleError(error);
+    }
   }
 
-  // function handleError(error) {
-  //   if (error.code.includes("auth")) {
-  //     console.log('error.code',error.code)
-  //     setError(error.message);
-  //   }
-  // }
+  function handleError(error) {
+    if (error.code.includes("auth")) {
+      console.log('error.code',error.code)
+      setError(error.message);
+    }
+  }
 
   async function getUserEmail(input) {
     const variables = { input };
