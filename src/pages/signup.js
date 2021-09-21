@@ -19,7 +19,7 @@ import { CHECK_IF_USERNAME_TAKEN } from "../graphql/queries";
 
 function SignUpPage() {
   const classes = useSignUpPageStyles();
-  const { register, handleSubmit, formState: { errors, touchedFields, isValid, isSubmitting }, } = useForm({ mode: 'onBlur' });
+const { register, handleSubmit, formState: { errors, touchedFields, isValid, isSubmitting }, } = useForm({ mode: 'onBlur' });
   const { signUpWithEmailAndPassword } = React.useContext(AuthContext);
   const history = useHistory();
   const [error, setError] = React.useState("");
@@ -40,7 +40,6 @@ function SignUpPage() {
 
   function handleError(error) {
     if (error.message.includes("users_username_key")) {
-      console.log('error', error)
       setError("Username already taken");
     } else if (error.code.includes("auth")) {
       setError(error.message);
@@ -96,9 +95,9 @@ function SignUpPage() {
             <form onSubmit={handleSubmit(onSubmit)}>
               <TextField
                 name="email"
-                {...register("email",{
-                  required: true,
-                  validate: (input) => isEmail(input),
+                {...register('email', { 
+                  required: true, 
+                  validate: input => isEmail(input) 
                 })}
                 InputProps={{
                   endAdornment: errors.email
@@ -114,10 +113,10 @@ function SignUpPage() {
               />
               <TextField
                 name="name"
-                {...register('name',{
+                {...register('name', {
                   required: true,
                   minLength: 5,
-                  maxLength: 20,
+                  maxLength: 20
                 })}
                 InputProps={{
                   endAdornment: errors.name
@@ -137,13 +136,11 @@ function SignUpPage() {
                     ? errorIcon
                     : touchedFields.username && validIcon,
                 }}
-                {...register('username',{
+                {...register('username', {
                   required: true,
                   minLength: 5,
                   maxLength: 20,
-                  validate: async (input) => await validateUsername(input),
-                  // accept only lowercase/uppercase letters, numbers, periods and underscores
-                  pattern: /^[a-zA-Z0-9_.]*$/,
+                  pattern: /^[a-zA-Z0-9_.]*$/
                 })}
                 fullWidth
                 variant="filled"
@@ -154,9 +151,10 @@ function SignUpPage() {
               />
               <TextField
                 name="password"
-                {...register('password',{
+                {...register('password', {
                   required: true,
                   minLength: 5,
+                  validate: async (input) => await validateUsername(input),
                 })}
                 InputProps={{
                   endAdornment: errors.password
