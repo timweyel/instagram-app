@@ -110,7 +110,7 @@ function LoginPage() {
                 autoComplete="current-password"
               />
               <Button
-                disabled={!isValid || isSubmitting}
+                // disabled={!isValid || isSubmitting}
                 variant="contained"
                 fullWidth
                 color="primary"
