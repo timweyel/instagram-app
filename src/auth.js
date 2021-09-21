@@ -10,13 +10,14 @@ const provider = new firebase.auth.GoogleAuthProvider();
 
 // Find these options in your Firebase console
 firebase.initializeApp({
-  apiKey: "AIzaSyC2ws_ne-3pmtR_jFdPeqZuk_XVbakDfsI",
-  authDomain: "insta-react12.firebaseapp.com",
-  databaseURL: "https://insta-react12.firebaseio.com",
-  projectId: "insta-react12",
-  storageBucket: "insta-react12.appspot.com",
-  messagingSenderId: "855447540452",
-  appId: "1:855447540452:web:1d2a10cbb3b25c215c92f1",
+  apiKey: "AIzaSyC-6LkwMohAqXR4yT6IlKmB3DD9ynlpRd0",
+  authDomain: "instapost-f8954.firebaseapp.com",
+  databaseURL: "https://instapost-f8954-default-rtdb.firebaseio.com",
+  projectId: "instapost-f8954",
+  storageBucket: "instapost-f8954.appspot.com",
+  messagingSenderId: "98337476696",
+  appId: "1:98337476696:web:6788d39ac76c20692cba2d",
+  measurementId: "G-T35PKKSS7N"
 });
 
 export const AuthContext = React.createContext();
