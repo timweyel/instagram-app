@@ -21,7 +21,8 @@ import { AuthError } from "./signup";
 
 function LoginPage() {
   const classes = useLoginPageStyles();
-  const { register, handleSubmit, watch, formState: { isValid, isSubmitting }, } = useForm({ mode: 'onBlur' });
+  // const { register, handleSubmit, watch, formState: { isValid, isSubmitting }, } = useForm({ mode: 'onBlur' });
+  const { register, handleSubmit, watch, } = useForm({ mode: 'onBlur' });
   const { logInWithEmailAndPassword } = React.useContext(AuthContext);
   const [showPassword, setPasswordVisibility] = React.useState(false);
   const hasPassword = Boolean(watch("password"));
