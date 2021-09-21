@@ -19,7 +19,8 @@ import { CHECK_IF_USERNAME_TAKEN } from "../graphql/queries";
 
 function SignUpPage() {
   const classes = useSignUpPageStyles();
-const { register, handleSubmit, formState: { errors, touchedFields, isValid, isSubmitting }, } = useForm({ mode: 'onBlur' });
+// const { register, handleSubmit, formState: { errors, touchedFields, isValid, isSubmitting }, } = useForm({ mode: 'onBlur' });
+const { register, handleSubmit, formState: { errors, touchedFields }, } = useForm({ mode: 'onBlur' });
   const { signUpWithEmailAndPassword } = React.useContext(AuthContext);
   const history = useHistory();
   const [error, setError] = React.useState("");
@@ -170,7 +171,7 @@ const { register, handleSubmit, formState: { errors, touchedFields, isValid, isS
                 autoComplete="new-password"
               />
               <Button
-                disabled={!isValid || isSubmitting}
+                // disabled={!isValid || isSubmitting}
                 variant="contained"
                 fullWidth
                 color="primary"
